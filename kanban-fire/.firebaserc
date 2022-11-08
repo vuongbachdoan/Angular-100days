@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "kanbanfire-ed687": {
+      "hosting": {
+        "kanban-fire": [
+          "vuong-kanban"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "kanbanfire-ed687"
+  }
+}
