@@ -13,12 +13,12 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SidenavModule } from './shared/components/sidenav/sidenav.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,12 +28,15 @@ import { AngularFireModule } from '@angular/fire/compat';
     MatCardModule,
     DragDropModule,
     MatButtonModule,
+    MatSidenavModule,
     TaskModule,
+    SidenavModule,
     provideFirestore(() => getFirestore()),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    NgbModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

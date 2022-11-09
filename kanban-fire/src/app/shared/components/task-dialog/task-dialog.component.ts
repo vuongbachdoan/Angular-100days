@@ -6,7 +6,7 @@ import { Task } from '../../models/task.model';
 @Component({
   selector: 'app-task-dialog',
   templateUrl: './task-dialog.component.html',
-  styleUrls: ['./task-dialog.component.scss'],
+  // styleUrls: ['./task-dialog.component.scss'],
 })
 export class TaskDialogComponent implements OnInit {
   private backupTask: Partial<Task> = { ...this.data.task };

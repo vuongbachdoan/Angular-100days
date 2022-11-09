@@ -30,7 +30,6 @@ export class AppComponent {
 
   newTask(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
-      width: '270px',
       data: {
         task: {},
       },

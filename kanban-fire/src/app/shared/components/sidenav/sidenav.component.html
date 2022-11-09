@@ -1,0 +1,33 @@
+<!-- Logo -->
+<div class="d-flex align-items-center justify-content-center my-4">
+  <mat-icon class="fs-4">local_fire_department</mat-icon>
+  <span class="fs-5 fw-bold">Kanban fire</span>
+</div>
+<!--  -->
+
+<!-- New workspace button -->
+<button mat-raised-button color="primary" class="w-100">
+  <mat-icon>add</mat-icon>
+  New Workspace
+</button>
+<!--  -->
+
+<!-- Sidenav content -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="w-100">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <!-- use a disabled button to provide padding for tree leaf -->
+      {{node.name}}
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+      <button mat-icon-button matTreeNodeToggle
+              [attr.aria-label]="'Toggle ' + node.name">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+      {{node.name}}
+    </mat-tree-node>
+</mat-tree>
+<!--  -->

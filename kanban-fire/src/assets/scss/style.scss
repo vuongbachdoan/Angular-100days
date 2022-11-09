@@ -1,0 +1,13 @@
+mat-drawer {
+  width: 200px;
+}
+
+mat-drawer-content {
+  position: relative;
+  .ic-sidenav-open {
+    position: absolute;
+    left: 0px;
+    top: 50vh;
+    transform: translateY(-50%);
+  }
+}
