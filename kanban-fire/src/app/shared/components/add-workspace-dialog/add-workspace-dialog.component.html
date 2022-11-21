@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Create workspace</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-tab-group>
+    <mat-tab label="New">
+      <ng-template matTabContent>
+        <mat-form-field>
+          <mat-label>Space name</mat-label>
+          <input matInput placeholder="Ex. Default space name" [(ngModel)] = "workspaceName">
+        </mat-form-field>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Template"> Template </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="createWorkspace()" [mat-dialog-close]="true" cdkFocusInitial>Create</button>
+</mat-dialog-actions>

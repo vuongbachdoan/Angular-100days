@@ -1,0 +1,84 @@
+<mat-drawer-container class="min-vh-100">
+  <mat-drawer class="px-2" #drawer mode="side" opened>
+    <app-sidenav></app-sidenav>
+  </mat-drawer>
+
+  <mat-drawer-content class="vh-100 px-4 pt-4">
+    <!-- Close drawer button -->
+    <button class="ic-sidenav-open" type="button" mat-button (click)="drawer.toggle()" aria-label="toggle sidenav">
+      <mat-icon>{{drawer.opened ? 'chevron_left': 'chevron_right'}}</mat-icon>
+    </button>
+    <!--  -->
+
+    <!-- Header -->
+    <mat-toolbar class=" bg-transparent p-0 d-flex justify-content-between">
+        <h1 class="fs-3 text-black">Name of workspace</h1>
+        <div class="d-flex gap-2">
+          <button class="" (click)="newPartner()" mat-raised-button color="primary">
+            <mat-icon>reply</mat-icon> Invite
+          </button>
+          <button class="" (click)="newTask()" mat-raised-button color="primary">
+            <mat-icon>add</mat-icon> Add Task
+          </button>
+        </div>
+    </mat-toolbar>
+
+    <!-- Partner avatar -->
+    <mat-chip-list aria-label="Dog selection">
+      <mat-chip>
+        <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+          alt="Photo of a Shiba Inu" />
+        Dog one
+      </mat-chip>
+      <mat-chip color="primary">
+        <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+          alt="Photo of a Shiba Inu" />
+        Dog two
+      </mat-chip>
+      <mat-chip color="accent">
+        <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+          alt="Photo of a Shiba Inu" />
+        Dog three
+      </mat-chip>
+    </mat-chip-list>
+    <!--  -->
+
+    <!-- Body -->
+    <div class="content-wrapper w-100">
+      <div class="container-wrapper d-flex justify-content-center gap-3">
+        <div class="container rounded p-2 w-100">
+          <h2 class="fs-6">Todo</h2>
+          <mat-card class="" cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todo | async"
+            [cdkDropListConnectedTo]="[doneList, inProgressList]" (cdkDropListDropped)="drop($event)" class="list">
+            <p class="empty-label fs-5" *ngIf="(todo | async)?.length === 0">Empty list</p>
+            <app-task (edit)="editTask('todo', $event)" *ngFor="let task of todo | async" cdkDrag [task]="task">
+            </app-task>
+          </mat-card>
+        </div>
+
+        <div class="container rounded p-2 w-100">
+          <h2 class="fs-6">In progress</h2>
+          <mat-card class="" cdkDropList id="inProgress" #inProgressList="cdkDropList"
+            [cdkDropListData]="inProgress | async" [cdkDropListConnectedTo]="[todoList, doneList]"
+            (cdkDropListDropped)="drop($event)" class="list">
+            <p class="empty-label fs-5" *ngIf="(inProgress | async)?.length == 0">Empty list</p>
+            <app-task (edit)="editTask('inProgress', $event)" *ngFor="let task of inProgress | async" cdkDrag
+              [task]="task">
+            </app-task>
+          </mat-card>
+        </div>
+
+        <div class="container rounded p-2 w-100">
+          <h2 class="fs-6">Done</h2>
+          <mat-card class="" cdkDropList id="done" #doneList="cdkDropList" [cdkDropListData]="done | async"
+            [cdkDropListConnectedTo]="[todoList, inProgressList]" (cdkDropListDropped)="drop($event)" class="list">
+            <p class="empty-label fs-5" *ngIf="(done | async)?.length == 0">Empty list</p>
+            <app-task (edit)="editTask('done', $event)" *ngFor="let task of done | async" cdkDrag [task]="task">
+            </app-task>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+  </mat-drawer-content>
+</mat-drawer-container>

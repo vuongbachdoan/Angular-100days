@@ -1,0 +1,30 @@
+<h3 class="fs-5">Find your partner by id</h3>
+
+
+<div class="d-flex align-items-center">
+  <mat-form-field>
+    <mat-label>Id of partner</mat-label>
+    <input matInput cdkFocusInitial [(ngModel)]="userId" />
+  </mat-form-field>
+</div>
+
+<mat-form-field appearance="fill">
+  <mat-label>Role</mat-label>
+  <mat-select [(ngModel)]="selectedRole">
+    <mat-option value="owner">
+      Owner
+    </mat-option>
+    <mat-option value="editor">
+      Editor
+    </mat-option>
+    <mat-option value="viewer">
+      Viewer
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<p> Selected food: {{selectedRole}} </p>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button (click)="invite()" mat-raised-button [mat-dialog-close]="{ task: data }" color="primary">Invite</button>
+</div>

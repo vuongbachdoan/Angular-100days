@@ -1,33 +1,65 @@
-<!-- Logo -->
-<div class="d-flex align-items-center justify-content-center my-4">
-  <mat-icon class="fs-4">local_fire_department</mat-icon>
-  <span class="fs-5 fw-bold">Kanban fire</span>
-</div>
-<!--  -->
+<div class="d-flex justify-content-between flex-column vh-100">
+  <div>
+    <!-- Logo -->
+    <div class="d-flex align-items-center justify-content-center my-4">
+      <mat-icon class="fs-4">local_fire_department</mat-icon>
+      <span class="fs-5 fw-bold">Kanban fire</span>
+    </div>
+    <!--  -->
 
-<!-- New workspace button -->
-<button mat-raised-button color="primary" class="w-100">
-  <mat-icon>add</mat-icon>
-  New Workspace
-</button>
-<!--  -->
+    <mat-accordion>
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Workspace
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <!-- New workspace button -->
+          <button (click)="addWorkspace()" mat-raised-button color="primary" class="w-100">
+            <mat-icon>add</mat-icon>
+            Space
+          </button>
+          <!--  -->
 
-<!-- Sidenav content -->
-<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="w-100">
-    <!-- This is the tree node template for leaf nodes -->
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-      <!-- use a disabled button to provide padding for tree leaf -->
-      {{node.name}}
-    </mat-tree-node>
-    <!-- This is the tree node template for expandable nodes -->
-    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
-      <button mat-icon-button matTreeNodeToggle
-              [attr.aria-label]="'Toggle ' + node.name">
-        <mat-icon class="mat-icon-rtl-mirror">
-          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-        </mat-icon>
+          <mat-list>
+            <mat-list-item *ngFor="let item of workspaces" (click)="setCurrentWorkspace(this.item)">
+              {{item.name}}
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <button *ngIf="!user" routerLink="/login" mat-raised-button class="w-100 mt-3" color="primary">Sign In</button>
+
+  <div *ngIf="user" class="d-flex align-items-center justify-content-between">
+    <div>
+      <mat-chip>
+        <img matChipAvatar [src]="user.photoURL" alt="Photo of a Shiba Inu" />
+        {{user.displayName}}
+      </mat-chip>
+    </div>
+
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
       </button>
-      {{node.name}}
-    </mat-tree-node>
-</mat-tree>
-<!--  -->
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [cdkCopyToClipboard]="user.uid">
+          <mat-icon>filter_none</mat-icon>
+          <span>Copy id</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="authService.SignOut()">
+          <mat-icon>sync</mat-icon>
+          <span>Switch account</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</div>
