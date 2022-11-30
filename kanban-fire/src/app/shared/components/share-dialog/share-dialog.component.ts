@@ -6,6 +6,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { collectionGroup } from '@angular/fire/firestore';
 import { CdkVirtualScrollableWindow } from '@angular/cdk/scrolling';
 import { Workspace } from '../../models/workspace.model';
+import { Store } from '@ngrx/store';
 
 export interface UserSearchResult {
   id?: string;
@@ -23,14 +24,25 @@ export class ShareDialogComponent implements OnInit {
   selectedRole?: string;
   workspace?: Workspace;
   userId!: string;
+  currentWorkspaceId!: string;
 
   private backupSearchData: Partial<UserSharingData> = { ...this.data };
 
   constructor(
     public dialogRef: MatDialogRef<ShareDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserSharingData,
-    private db: AngularFirestore
-  ) {}
+    private db: AngularFirestore,
+    store: Store<{currentWorkspaceId: string}>
+  ) {
+    store.select('currentWorkspaceId').subscribe(
+      (val) => {
+        console.log(val)
+        this.currentWorkspaceId = val
+      }
+    );
+
+    console.log(this.currentWorkspaceId)
+  }
 
   ngOnInit(): void {}
 
@@ -41,7 +53,7 @@ export class ShareDialogComponent implements OnInit {
   invite(): void {
     this.db
       .collection('workspace')
-      .doc<Workspace>(localStorage.getItem('workspace') ?? '')
+      .doc<Workspace>(this.currentWorkspaceId ?? '')
       .get()
       .subscribe((val) => {
         val.ref.update({
@@ -58,14 +70,6 @@ export class ShareDialogComponent implements OnInit {
               ? [...(val.data()!.editor ?? []), this.userId]
               : (val.data()!.owner ?? []),
         });
-        this.db
-          .collection<Workspace>('workspace')
-          .doc(localStorage.getItem('workspace') ?? '')
-          .get()
-          .subscribe((data) => {
-            console.log(data.data())
-
-          });
       });
   }
 }

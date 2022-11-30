@@ -8,7 +8,7 @@
     <!--  -->
 
     <mat-accordion>
-      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel [expanded]="workspaces.length > 0" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Workspace
@@ -16,7 +16,7 @@
         </mat-expansion-panel-header>
         <div>
           <!-- New workspace button -->
-          <button (click)="addWorkspace()" mat-raised-button color="primary" class="w-100">
+          <button (click)="addWorkspace()" mat-raised-button outline="none" color="primary" class="w-100">
             <mat-icon>add</mat-icon>
             Space
           </button>
@@ -24,6 +24,7 @@
 
           <mat-list>
             <mat-list-item *ngFor="let item of workspaces" (click)="setCurrentWorkspace(this.item)">
+              <mat-icon>ballot</mat-icon>
               {{item.name}}
             </mat-list-item>
           </mat-list>
@@ -32,9 +33,9 @@
     </mat-accordion>
   </div>
 
-  <button *ngIf="!user" routerLink="/login" mat-raised-button class="w-100 mt-3" color="primary">Sign In</button>
+  <button *ngIf="!user.uid" routerLink="/login" mat-raised-button class="w-100 mt-3" color="primary">Sign In</button>
 
-  <div *ngIf="user" class="d-flex align-items-center justify-content-between">
+  <div *ngIf="user.uid" class="d-flex align-items-center justify-content-between">
     <div>
       <mat-chip>
         <img matChipAvatar [src]="user.photoURL" alt="Photo of a Shiba Inu" />

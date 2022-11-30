@@ -15,7 +15,7 @@ import { Workspace } from '../../models/workspace.model';
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
   const subject = new BehaviorSubject<Task[]>([]);
-  collection.valueChanges({ idField: 'id' }).subscribe((val: Task[]) => {
+  collection.valueChanges({ idField: 'todo' }).subscribe((val: Task[]) => {
     subject.next(val);
   });
   return subject;
@@ -27,15 +27,41 @@ const getObservable = (collection: AngularFirestoreCollection<Task>) => {
 })
 export class HomeComponent implements OnInit {
   title = 'kanban-fire';
-  todo = getObservable(this.db.collection('workspace').doc(localStorage.getItem('workspace') ?? '').collection('todo')) as Observable<Task[]>;
-  inProgress = getObservable(this.db.collection('workspace').doc(localStorage.getItem('workspace') ?? '').collection('inProgress')) as Observable<
-    Task[]
-  >;
-  done = getObservable(this.db.collection('workspace').doc(localStorage.getItem('workspace') ?? '').collection('done')) as Observable<Task[]>;
+  todo = getObservable(
+    this.db
+      .collection('workspace')
+      .doc(localStorage.getItem('workspace') ?? '')
+      .collection('todo')
+  ) as Observable<Task[]>;
+  inProgress = getObservable(
+    this.db
+      .collection('workspace')
+      .doc(localStorage.getItem('workspace') ?? '')
+      .collection('inProgress')
+  ) as Observable<Task[]>;
+  done = getObservable(
+    this.db
+      .collection('workspace')
+      .doc(localStorage.getItem('workspace') ?? '')
+      .collection('done')
+  ) as Observable<Task[]>;
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore) {}
+  constructor(private dialog: MatDialog, private db: AngularFirestore) {
+    this.db
+      .collection('workspace')
+      .doc(localStorage.getItem('workspace') ?? '')
+      .collection('todo')
+      .valueChanges()
+      .subscribe((val) => {
+        this.todo = getObservable(
+          this.db
+            .collection('workspace')
+            .doc(localStorage.getItem('workspace') ?? '')
+            .collection('todo')
+        ) as Observable<Task[]>;
+      });
+  }
   ngOnInit(): void {
-    console.log(this.db.collection('workspace').doc(localStorage.getItem('workspace') ?? '').collection('todo').valueChanges());
   }
 
   newPartner(): void {
@@ -44,7 +70,6 @@ export class HomeComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: UserSharingData | undefined) => {
       if (result) return;
-      // this.db.collection('') // update data in workspace: Find workspace by id, update partners
     });
   }
 
@@ -60,19 +85,16 @@ export class HomeComponent implements OnInit {
         if (!result) {
           return;
         }
-        // this.db.collection('todo').add(result.task);
-
         this.db
-          .collection<Workspace>('workspace')
+          .collection('workspace')
           .doc(localStorage.getItem('workspace') ?? '')
           .collection('todo')
-          .add(result.task);
+          .add(result.task)
       });
   }
 
   editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
-      // width: '270px',
       data: {
         task,
         enableDelete: true,
@@ -85,8 +107,6 @@ export class HomeComponent implements OnInit {
           return;
         }
         if (result.delete) {
-          // this.db.collection(list).doc(task.id).delete();
-
           this.db
             .collection<Workspace>('workspace')
             .doc(localStorage.getItem('workspace') ?? '')
@@ -97,7 +117,7 @@ export class HomeComponent implements OnInit {
           this.db
             .collection<Workspace>('workspace')
             .doc(localStorage.getItem('workspace') ?? '')
-            .collection(list)
+            .collection('data')
             .doc(task.id)
             .update(task);
         }

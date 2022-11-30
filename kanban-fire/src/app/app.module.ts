@@ -10,6 +10,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeModule } from './shared/layout/home/home.module';
 import { LoginModule } from './shared/layout/login/login.module';
 import { AuthService } from './core/services/user/user.injectable';
+import { StoreModule } from '@ngrx/store';
+import { workspaceReducer } from './core/store/reducer/workspace.reducer';
+import { userReducer } from './core/store/reducer/user.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +24,8 @@ import { AuthService } from './core/services/user/user.injectable';
     AngularFireModule.initializeApp(environment.firebase),
     NgbModule,
     HomeModule,
-    LoginModule
+    LoginModule,
+    StoreModule.forRoot({currentWorkspaceId: workspaceReducer, currentUser: userReducer})
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
