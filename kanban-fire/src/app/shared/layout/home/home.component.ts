@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit {
           this.db
             .collection<Workspace>('workspace')
             .doc(localStorage.getItem('workspace') ?? '')
-            .collection('data')
+            .collection(list)
             .doc(task.id)
             .update(task);
         }
