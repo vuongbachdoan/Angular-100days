@@ -37,3 +37,18 @@ mat-list-item {
     background-color: #ddd;
   }
 }
+
+mat-drawer-content {
+  background-color: rgb(240, 241, 255);
+}
+
+.mat-expansion-indicator::after{
+  color: rgb(89, 36, 223);
+}
+
+app-login {
+  position: relative;
+  top: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
