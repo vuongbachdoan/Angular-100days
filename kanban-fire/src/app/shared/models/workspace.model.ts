@@ -6,5 +6,10 @@ export interface Workspace {
   owner?: string,
   name: string,
   id?: string,
-  data?: Task[]
+  data?: {
+    todo: Task[],
+    inProgress: Task[],
+    done: Task[]
+  }
 }
+

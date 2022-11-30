@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Store } from '@ngrx/store';
 import { Workspace } from '../../models/workspace.model';
 
 @Component({
@@ -9,7 +10,7 @@ import { Workspace } from '../../models/workspace.model';
 export class AddWorkspaceDialogComponent implements OnInit {
   workspaceName?: string
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private store: Store<{}>) {
   }
 
   ngOnInit(): void {
